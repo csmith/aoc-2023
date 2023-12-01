@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE=csmith/aoc-2023-01
+IMAGE=csmith/aoc-2023-02
 
 if ! docker image inspect $IMAGE >/dev/null 2>&1; then
   echo "One time setup: building docker image..."
