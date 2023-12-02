@@ -1,19 +1,19 @@
 package main
 
 import (
-	"github.com/csmith/aoc-2023/common"
+	"github.com/csmith/aoc-2023/common/channels"
 )
 
 func main() {
-	common.RunForkedChannels(common.ReadFileChannel("01/input.txt"), partOne, partTwo)
+	channels.RunForked(channels.ReadFileBytes("01/input.txt"), partOne, partTwo)
 }
 
 func partOne(in <-chan byte) <-chan int {
-	return common.Sum(produceSums(in))
+	return channels.Sum(produceSums(in))
 }
 
 func partTwo(in <-chan byte) <-chan int {
-	return common.Sum(produceSums(emitNumberWords(in)))
+	return channels.Sum(produceSums(emitNumberWords(in)))
 }
 
 func produceSums(in <-chan byte) <-chan int {
