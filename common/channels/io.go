@@ -38,3 +38,22 @@ func ReadFileBytes(path string) <-chan byte {
 	}()
 	return ch
 }
+
+// SplitLines splits a byte channel into a string channel, splitting on LFs
+// and ignoring CRs.
+func SplitLines(in <-chan byte) <-chan string {
+	out := make(chan string)
+	go func() {
+		defer close(out)
+		var buffer []byte
+		for b := range in {
+			if b == '\n' {
+				out <- string(buffer)
+				buffer = nil
+			} else if b != '\r' {
+				buffer = append(buffer, b)
+			}
+		}
+	}()
+	return out
+}

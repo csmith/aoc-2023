@@ -25,3 +25,11 @@ func Reverse[S ~[]E, E any](s S) {
 		s[i], s[j] = s[j], s[i]
 	}
 }
+
+func MapSlice[S, T any](in []S, f func(S) T) []T {
+	out := make([]T, len(in))
+	for i, v := range in {
+		out[i] = f(v)
+	}
+	return out
+}
