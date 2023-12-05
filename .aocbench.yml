@@ -1,0 +1,16 @@
+version: 1
+author: MD87
+langauge: Go
+# TODO: Once aocbench can supply its own hyperfine, this can be reverted to a plain go image
+dockerfile: docker/Dockerfile.hyperfine
+# image: golang:1.21
+code: /code
+workdir: /code
+runonce: go install -buildvcs=false ./%dayzero%
+cmd: %dayzero%
+persistence:
+  - /go/bin
+  - /root/.cache/go-build
+daypath: %zeroday%
+inputfile: %zeroday%/input.txt
+answerfile: %zeroday%/answers.txt

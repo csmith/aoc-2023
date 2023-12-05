@@ -1,0 +1,5 @@
+FROM golang:1.21
+
+RUN apt-get update && apt-get install -y hyperfine && rm -rf /var/lib/apt/lists/*
+
+VOLUME /code
