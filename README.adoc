@@ -1,8 +1,9 @@
 = Advent of Code 2023
 
-This repository contains my solution to 2023's https://adventofcode.com/2023[Advent of Code] puzzles in Go.
+This repository contains my solution to 2023's https://adventofcode.com/2023[Advent of Code] puzzles in Go,
+with an emphasis on using channels (even when that doesn't make any sense at all).
 
-The easiest way to run these is using docker – simply execute run.sh <day> to build a docker image and execute the specific day.
+Each day is an individual program, so you can `go run ./01`, `go run ./02` etc.
 
 I have separate repositories for solutions from previous years:
 
