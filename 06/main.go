@@ -30,7 +30,9 @@ func mergeObviouslySeparateNumbersIntoOne(in <-chan string) <-chan string {
 		defer close(out)
 
 		for line := range in {
-			out <- line[0:12] + strings.ReplaceAll(line[12:], " ", "")
+			if len(line) > 12 {
+				out <- line[0:12] + strings.ReplaceAll(line[12:], " ", "")
+			}
 		}
 	}()
 
