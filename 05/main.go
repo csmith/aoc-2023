@@ -157,10 +157,10 @@ func parseLines(in <-chan string) <-chan []string {
 		defer close(out)
 
 		// First line is a special snowflake
-		out <- strings.Split(strings.TrimPrefix(<-in, "seeds: "), " ")
+		out <- strings.Fields(strings.TrimPrefix(<-in, "seeds: "))
 
 		for line := range in {
-			out <- strings.Split(line, " ")
+			out <- strings.Fields(line)
 		}
 	}()
 	return out

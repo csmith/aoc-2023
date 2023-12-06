@@ -16,6 +16,20 @@ func Sum(channel <-chan int) chan int {
 	return res
 }
 
+// Product takes the product of all the values received on the channel
+func Product(channel <-chan int) chan int {
+	res := make(chan int)
+	go func() {
+		defer close(res)
+		product := 1
+		for o := range channel {
+			product *= o
+		}
+		res <- product
+	}()
+	return res
+}
+
 // Min finds the smallest value received on the channel
 func Min(channel <-chan int) chan int {
 	res := make(chan int)
