@@ -1,5 +1,7 @@
 package channels
 
+import "slices"
+
 // Fork reads all data from the given channel and sends it to two new channels.
 func Fork[T any](channel <-chan T) (chan T, chan T) {
 	a := make(chan T, 100)
@@ -48,6 +50,27 @@ func Filter[T any](channel <-chan T, f func(T) bool) chan T {
 			if f(o) {
 				res <- o
 			}
+		}
+	}()
+	return res
+}
+
+// Sort collects all values from the channel, sorts them in ascending order
+// according to the cmp function, and emits each item to the returned channel.
+func Sort[T any](channel <-chan T, cmp func(T, T) int) chan T {
+	res := make(chan T)
+	go func() {
+		defer close(res)
+		var values []T
+
+		for o := range channel {
+			values = append(values, o)
+		}
+
+		slices.SortFunc(values, cmp)
+
+		for _, o := range values {
+			res <- o
 		}
 	}()
 	return res
