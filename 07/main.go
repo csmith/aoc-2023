@@ -145,24 +145,16 @@ func parseHands(in <-chan byte, jokers bool) <-chan common.Pair[int, int] {
 	return out
 }
 
-const invalid = hand(255)
-
-// jokerMutationMap maps each hand to a new hand based on the number of jokers present
-var jokerMutationMap = [7][6]hand{
-	// High card
+// jokerMutationMap maps existing hands to a new hand based on the number of jokers present.
+// e.g. jokerMutationMap[twoPair][1] gives the hand that results from adding 1 joker to a two pair (= full house).
+var jokerMutationMap = [7][]hand{
 	{highCard, onePair, threeOfAKind, fourOfAKind, fiveOfAKind, fiveOfAKind},
-	// One pair
-	{onePair, threeOfAKind, fourOfAKind, fiveOfAKind, invalid, invalid},
-	// Two pair
-	{twoPair, fullHouse, fourOfAKind, fiveOfAKind, invalid, invalid},
-	// Three of a kind
-	{threeOfAKind, fourOfAKind, fiveOfAKind, invalid, invalid, invalid},
-	// Full house
-	{fullHouse, fourOfAKind, fiveOfAKind, invalid, invalid, invalid},
-	// Four of a kind
-	{fourOfAKind, fiveOfAKind, invalid, invalid, invalid, invalid},
-	// Five of a kind
-	{fiveOfAKind, invalid, invalid, invalid, invalid, invalid},
+	{onePair, threeOfAKind, fourOfAKind, fiveOfAKind},
+	{twoPair, fullHouse},
+	{threeOfAKind, fourOfAKind, fiveOfAKind},
+	{fullHouse},
+	{fourOfAKind, fiveOfAKind},
+	{fiveOfAKind},
 }
 
 func getHand(dupes [6]uint8) hand {
