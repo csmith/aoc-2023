@@ -34,3 +34,9 @@ func MapSecondSliceSlice[R, S, T any](p Pair[R, [][]S], f func(S) T) Pair[R, [][
 		}),
 	}
 }
+
+type Triple[R, S, T any] struct {
+	First  R
+	Second S
+	Third  T
+}

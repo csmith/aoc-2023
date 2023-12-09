@@ -3,7 +3,7 @@ package channels
 import "slices"
 
 // Fork reads all data from the given channel and sends it to two new channels.
-func Fork[T any](channel <-chan T) (chan T, chan T) {
+func Fork[T any](channel <-chan T) (<-chan T, <-chan T) {
 	a := make(chan T, 100)
 	b := make(chan T, 100)
 	go func() {
@@ -29,7 +29,7 @@ func RunForked[T, R any](input <-chan T, partOne func(<-chan T) <-chan R, partTw
 
 // Map applies the given function to each value received on the channel and
 // emits it to the returned channel.
-func Map[T, R any](channel <-chan T, f func(T) R) chan R {
+func Map[T, R any](channel <-chan T, f func(T) R) <-chan R {
 	res := make(chan R)
 	go func() {
 		defer close(res)
@@ -42,7 +42,7 @@ func Map[T, R any](channel <-chan T, f func(T) R) chan R {
 
 // Filter applies the given function to each value received on the channel and
 // emits it to the returned channel if the function returns true.
-func Filter[T any](channel <-chan T, f func(T) bool) chan T {
+func Filter[T any](channel <-chan T, f func(T) bool) <-chan T {
 	res := make(chan T)
 	go func() {
 		defer close(res)
@@ -57,7 +57,7 @@ func Filter[T any](channel <-chan T, f func(T) bool) chan T {
 
 // Sort collects all values from the channel, sorts them in ascending order
 // according to the cmp function, and emits each item to the returned channel.
-func Sort[T any](channel <-chan T, cmp func(T, T) int) chan T {
+func Sort[T any](channel <-chan T, cmp func(T, T) int) <-chan T {
 	res := make(chan T)
 	go func() {
 		defer close(res)
@@ -74,4 +74,46 @@ func Sort[T any](channel <-chan T, cmp func(T, T) int) chan T {
 		}
 	}()
 	return res
+}
+
+// Repeat fully reads the given channel, then repeats its values forever.
+func Repeat[T any](in <-chan T) <-chan T {
+	out := make(chan T)
+
+	go func() {
+		defer close(out)
+		buffer := <-Collate(in)
+
+		for {
+			for _, o := range buffer {
+				out <- o
+			}
+		}
+	}()
+
+	return out
+}
+
+// Collate reads all items from the given channel and emits them as a single slice.
+func Collate[T any](in <-chan T) <-chan []T {
+	out := make(chan []T)
+
+	go func() {
+		defer close(out)
+		var buffer []T
+		for o := range in {
+			buffer = append(buffer, o)
+		}
+		out <- buffer
+	}()
+
+	return out
+}
+
+// Drain reads all items from the given channel and ignores them entirely.
+func Drain[T any](in <-chan T) {
+	go func() {
+		for range in {
+		}
+	}()
 }

@@ -1,9 +1,8 @@
 = Advent of Code 2023
 
-This repository contains my solution to 2023's https://adventofcode.com/2023[Advent of Code] puzzles in Go,
-with an emphasis on using channels (even when that doesn't make any sense at all).
+This repository contains my solution to 2023's https://adventofcode.com/2023[Advent of Code] puzzles in Nim.
 
-Each day is an individual program, so you can `go run ./01`, `go run ./02` etc.
+Each day is an individual program. Run `nim c day01.nim` to compile it, then `./day01` to run.
 
 I have separate repositories for solutions from previous years:
 
