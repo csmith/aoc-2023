@@ -1,11 +1,11 @@
 version: 1
-author: MD87
-language: Nim
-image: nimlang/nim:2.0.0-aline-slim
-code: /code
-workdir: /code
-runonce: nim c --opt:speed -d:danger --passC:"-Ofast -march=native -mtune=native -flto" --passL:"-flto" day%zeroday%.nim
-cmd: ./%zeroday%
-daypath: %zeroday%.nim
-inputfile: inputs/%zeroday%.txt
-answerfile: answers/%zeroday%.txt
+author: "MD87"
+language: "Nim"
+image: "nimlang/nim:2.0.0-aline-slim"
+code: "/code"
+workdir: "/code"
+runonce: "nim c --opt:speed -d:release -d:danger --passC:'-Ofast -march=native -mtune=native -flto' --passL:'-flto' day%zeroday%.nim"
+cmd: "./%zeroday%"
+daypath: "%zeroday%.nim"
+inputfile: "inputs/%zeroday%.txt"
+answerfile: "answers/%zeroday%.txt"
