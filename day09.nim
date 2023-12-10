@@ -1,4 +1,4 @@
-import memfiles, sequtils
+import memfiles
 
 func prediction(series: seq[int]): (int, int) {.inline.} =
   var
@@ -6,21 +6,24 @@ func prediction(series: seq[int]): (int, int) {.inline.} =
     firstDigits = 0
     current = series
     odd = false
-  while not all(current, proc (x: int): bool = x == 0):
+    zeroes = false
+  while not zeroes:
     firstDigits += current[0] * (if odd: -1 else: 1)
     lastDigits += current[len(current)-1]
+    zeroes = true
     for i in 0..current.len-2:
       current[i] = current[i+1] - current[i]
+      if zeroes and current[i] != 0:
+        zeroes = false
     current.setLen(current.len-1)
     odd = not odd
   return (lastDigits, firstDigits)
-  
 
 proc main(): void =
   let input = memfiles.open("inputs/09.txt")
   
   var
-    series = newSeq[int]()
+    series = newSeqOfCap[int](25)
     digit = 0
     negative = false
     partOne = 0
