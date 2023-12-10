@@ -90,4 +90,4 @@ proc main(): void =
   echo partOne
   echo partTwo
 
-main()  
+main()
