@@ -20,7 +20,7 @@ proc main(): void =
 
     block forward:
       var foundPartTwo = false
-      for i in 0..slice.size:
+      for i in 0..slice.size-1:
         if line[i] >= '0' and line[i] <= '9':
           partOne += 10 * (line[i].ord - '0'.ord)
           if not foundPartTwo:
@@ -31,6 +31,7 @@ proc main(): void =
             if matches(line, i, w):
               foundPartTwo = true
               partTwo += 10 * (v + 1)
+              break
 
     block backward:
       var foundPartTwo = false
@@ -45,6 +46,7 @@ proc main(): void =
             if matches(line, i, w):
               foundPartTwo = true
               partTwo += v + 1
+              break
 
   echo partOne
   echo partTwo
