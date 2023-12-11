@@ -108,17 +108,23 @@ proc main(): void =
     if pos == startingPos:
       break
 
-  # Part two: running across each row, we start outside then toggle that every
-  # time we cross an upwards connection.
+  # Part two: if we run across each row, we know that we start on the outside
+  # of the loop and may transition to inside when crossing an edge. We only
+  # count edges that go upwards (downwards would also work) to deal with cases
+  # where the pipe enters our row then leaves by the way it came in, e.g.:
+  # ┏━━━━┓ doesn't cause a transition, but ┏━━━━┛ does.
+  #
+  # Further, as each row starts and ends on the outside of the loop, we don't
+  # actually have to think in rows and can just iterate the whole map in one
+  # go.
   var holes = 0
-  for i in 0..int(input.size/lineLength)-1:
-    var inside = false
-    for j in 0..lineLength-1:
-      if route[i*lineLength+j]:
-        if map[i*lineLength+j].canGo(up):
-          inside = not inside
-      elif inside:
-        inc holes
+  var inside = false
+  for i in 0..len(map)-1:
+    if route[i]:
+      if map[i].canGo(up):
+        inside = not inside
+    elif inside:
+      inc holes
     
   echo int(moves/2)
   echo holes
