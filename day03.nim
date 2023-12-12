@@ -1,11 +1,10 @@
 import memfiles
 
-proc digit(ch: char): bool {.inline.} =
+func digit(ch: char): bool {.inline.} =
   return ch >= '0' and ch <= '9'
 
-proc symbol(ch: char): bool {.inline.} =
-  let c = ch.ord
-  return (c >= 33 and c <= 45) or c == 47 or c >= 58
+func symbol(ch: char): bool {.inline.} =
+  return (ch >= '!' and ch <= '-') or ch == '/' or ch >= ':'
 
 proc main(): void =
   let input = memfiles.open("inputs/03.txt")
@@ -95,9 +94,11 @@ proc main(): void =
     if first:
       lineLength = slice.size
       shift(cstring(newString(lineLength)))
-      first = false
     shift(cast[cstring](slice.data))
-    process()
+    if first:
+      first = false
+    else:
+      process()
     
   shift(cstring(newString(lineLength)))
   process()
