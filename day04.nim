@@ -16,24 +16,24 @@ proc main(): void =
     
     var
       winningLow, winningHigh, ourLow, ourHigh: uint64  # WTB: uint128
-      phase, digit: uint8
+      digit: uint8
+      ours: bool
 
-    for i in 0..slice.size:
-      if line[i] == ':' or line[i] == '|':
-        phase += 1
-        continue
-      elif phase > 0:
+    for i in 10..slice.size:
+      if line[i] == '|':
+        ours = true
+      else:
         if line[i] >= '0' and line[i] <= '9':
           digit = 10 * digit + uint8(line[i].ord - '0'.ord)
         elif digit > 0:
-          if phase == 1 and digit < 64:
-            winningLow = winningLow or uint64(1 shl digit)
-          elif phase == 1:
-            winningHigh = winningHigh or uint64(1 shl (digit - 64))
-          elif phase == 2 and digit < 64:
-            ourLow = ourLow or uint64(1 shl digit)
-          elif phase == 2:
-            ourHigh = ourHigh or uint64(1 shl (digit - 64))
+          if not ours and digit < 64:
+            winningLow.setBit(digit)
+          elif not ours:
+            winningHigh.setBit(digit - 64)
+          elif digit < 64:
+            ourLow.setBit(digit)
+          else:
+            ourHigh.setBit(digit - 64)
             
           digit = 0
     
