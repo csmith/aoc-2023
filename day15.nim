@@ -10,7 +10,7 @@ proc main(): void =
     label = 0
     labelHash = 0
     value = 0
-    lenses = newTable[int, int]()
+    lenses = newTable[int, int](600)
     hashmap = newSeq[seq[int]](256)
 
   proc process() =
